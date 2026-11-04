@@ -3,11 +3,47 @@ import { version as uuidVersion } from 'uuid';
 import { validate as uuidValidate } from 'uuid';
 
 import config from '@/config'
+import { request } from '@/services/api'
 import { d6 } from '@/services/dice-roller'
 import { loadPrefs, savePrefsKey } from '@/services/preferences'
 
 function uuidValidateV5 (uuid) {
   return uuidValidate(uuid) && uuidVersion(uuid) === 5;
+}
+
+// Save a sheet (and its hirelings) on the colony server: POST /sheets
+function postSheet (tableId, name, data) {
+  const { sheet } = data
+  const hirelings = (data.hirelings || []).map(h => ({
+    name: h.sheet.name,
+    desc: h.sheet.desc,
+    str: h.sheet.currentStr,
+    str_max: h.sheet.maxStr,
+    dex: h.sheet.currentDex,
+    dex_max: h.sheet.maxDex,
+    wil: h.sheet.currentWil,
+    wil_max: h.sheet.maxWil,
+    hp: h.sheet.currentHP,
+    hp_max: h.sheet.maxHP,
+    level: h.sheet.level
+  }))
+  return request('/sheets', {
+    method: 'POST',
+    query: {
+      vtable: tableId,
+      name,
+      str: sheet.currentStr,
+      str_max: sheet.maxStr,
+      dex: sheet.currentDex,
+      dex_max: sheet.maxDex,
+      wil: sheet.currentWil,
+      wil_max: sheet.maxWil,
+      hp: sheet.currentHP,
+      hp_max: sheet.maxHP,
+      level: sheet.level
+    },
+    body: { data: '', hirelings }
+  })
 }
 
 export const store = createStore({
@@ -123,19 +159,17 @@ export const store = createStore({
         return
       }
 
-      const options = {
-        method: 'POST',
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(diceResult)
+      try {
+        const response = await request('/dices', {
+          method: 'POST',
+          query: { vtable: getters['tableId'], sheet: getters['sheetSignature'] },
+          body: diceResult
+        })
+        state.tableState = { status: response.status, statusText: response.statusText }
+        return response
+      } catch (error) {
+        commit('FAILURE', error)
       }
-      return fetch(`${getters['config'].SERVER_API_URL}/dices.php?vtable=${getters['tableId']}&sheet=${getters['sheetSignature']}`, options)
-        .then((response) => {
-          state.tableState = { status: response.status, statusText: JSON.stringify(response, undefined, 2) }
-          return response
-        })
-        .catch((error) => {
-          commit('FAILURE', error)
-        })
     },
     async sendCurrentSheet ({ state, getters, commit }) {
       if (!getters['tableId'] || !getters['sheetSignature'] || !getters['currentSheet']) {
@@ -143,24 +177,10 @@ export const store = createStore({
         return
       }
 
-      const hirelings = []
-      if (getters['currentSheet'].hirelings.length) {
-        getters['currentSheet'].hirelings.forEach(h => {
-          hirelings.push({ name: h.sheet.name, desc: h.sheet.desc, str: h.sheet.currentStr, str_max: h.sheet.maxStr, dex: h.sheet.currentDex, dex_max: h.sheet.maxDex, wil: h.sheet.currentWil, wil_max: h.sheet.maxWil, hp: h.sheet.currentHP, hp_max: h.sheet.maxHP, level: h.sheet.level })
-        })
-      }
-      const options = {
-        method: 'POST',
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          data: '',
-          hirelings
-        })
-      }
       try {
-        const response = await fetch(`${getters['config'].SERVER_API_URL}/sheets.php?vtable=${getters['tableId']}&name=${getters['sheetSignature']}&str=${getters['currentSheet'].sheet.currentStr}&str_max=${getters['currentSheet'].sheet.maxStr}&dex=${getters['currentSheet'].sheet.currentDex}&dex_max=${getters['currentSheet'].sheet.maxDex}&wil=${getters['currentSheet'].sheet.currentWil}&wil_max=${getters['currentSheet'].sheet.maxWil}&hp=${getters['currentSheet'].sheet.currentHP}&hp_max=${getters['currentSheet'].sheet.maxHP}&level=${getters['currentSheet'].sheet.level}`, options)
+        const response = await postSheet(getters['tableId'], getters['sheetSignature'], getters['currentSheet'])
         state.tableState = { status: response.status, statusText: response.statusText }
-      } catch(error) {
+      } catch (error) {
         commit('FAILURE', error)
       }
     },
@@ -170,24 +190,10 @@ export const store = createStore({
         return
       }
 
-      const hirelings = []
-      if (data?.hirelings?.length) {
-        data.hirelings.forEach(h => {
-          hirelings.push({ name: h.sheet.name, desc: h.sheet.desc, str: h.sheet.currentStr, str_max: h.sheet.maxStr, dex: h.sheet.currentDex, dex_max: h.sheet.maxDex, wil: h.sheet.currentWil, wil_max: h.sheet.maxWil, hp: h.sheet.currentHP, hp_max: h.sheet.maxHP, level: h.sheet.level })
-        })
-      }
-      const options = {
-        method: 'POST',
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          data: '',
-          hirelings
-        })
-      }
       try {
-        const response = await fetch(`${getters['config'].SERVER_API_URL}/sheets.php?vtable=${getters['tableId']}&name=${getters['sheetSignature']}&str=${data.sheet.currentStr}&str_max=${data.sheet.maxStr}&dex=${data.sheet.currentDex}&dex_max=${data.sheet.maxDex}&wil=${data.sheet.currentWil}&wil_max=${data.sheet.maxWil}&hp=${data.sheet.currentHP}&hp_max=${data.sheet.maxHP}&level=${data.sheet.level}`, options)
+        const response = await postSheet(getters['tableId'], getters['sheetSignature'], data)
         state.tableState = { status: response.status, statusText: response.statusText }
-      } catch(error) {
+      } catch (error) {
         commit('FAILURE', error)
       }
     },
