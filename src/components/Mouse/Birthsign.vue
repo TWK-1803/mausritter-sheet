@@ -1,7 +1,7 @@
 <template>
   <w-flex row align-center justify-center class="wrapper">
     <span v-if="showLabel" class="body pl1">{{ $t('Birthsign') }}</span>
-    <w-select v-bind="$attrs" :items="items" :label="showLabel ? '' :$t('Birthsign')" static-label @input="updateValue">
+    <w-select v-bind="$attrs" class="select-right" menu-class="select-right-menu" :items="items" :label="showLabel ? '' :$t('Birthsign')" static-label @input="updateValue">
       <template #item="{ item }">
         <w-flex justify-space-between align-center>
           <span>{{ $t(item.label) }}</span>

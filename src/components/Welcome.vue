@@ -57,7 +57,7 @@
             <div v-else-if="index === currentSlotIndex">
               {{ slotName(index) }}
             </div>
-            <w-button v-else text @click="loadSheet(index)">
+            <w-button v-else text color="white" @click="loadSheet(index)">
               {{ slotName(index) }}
             </w-button>
             <div>
