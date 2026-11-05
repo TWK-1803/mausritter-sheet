@@ -621,6 +621,12 @@ textarea {
   text-align: right;
 }
 
+.disposition {
+  font-size: 11px;
+  font-style: italic;
+  color: var(--w-minor-color);
+}
+
 a {
  color: var(--w-link-color);
 }

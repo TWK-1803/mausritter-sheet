@@ -4,14 +4,14 @@
     <w-select v-bind="$attrs" class="select-right" menu-class="select-right-menu" :items="items" :label="showLabel ? '' :$t('Birthsign')" static-label @input="updateValue">
       <template #item="{ item }">
         <w-flex justify-space-between align-center>
+          <span class="disposition pr2">{{ $t(item.disposition1) }} / {{ $t(item.disposition2) }}</span>
           <span>{{ $t(item.label) }}</span>
-          <span class="caption">{{ $t(item.disposition1) }} / {{ $t(item.disposition2) }}</span>
         </w-flex>
       </template>
       <template #selection="{ item }">
         <w-flex v-if="item" justify-space-between align-center>
-          <span class="pr2 input-value">{{ $t(item.label) }}</span>
-          <span class="caption">{{ $t(item.disposition1) }} / {{ $t(item.disposition2) }}</span>
+          <span class="disposition pr2">{{ $t(item.disposition1) }} / {{ $t(item.disposition2) }}</span>
+          <span class="input-value">{{ $t(item.label) }}</span>
         </w-flex>
       </template>
     </w-select>
