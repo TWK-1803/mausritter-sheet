@@ -69,7 +69,7 @@
                   <w-input v-model.number="current.maxStr" class="title1" color="minor" />
                 </div>
                 <div class="w-150 divider-v text-center">
-                  <w-input v-model.number="current.currentStr" class="title1 primary" />
+                  <w-input v-model.number="current.currentStr" class="title1" color="minor" />
                 </div>
               </w-flex>
 
@@ -88,7 +88,7 @@
                   <w-input v-model.number="current.maxDex" class="title1" color="minor" />
                 </div>
                 <div class="w-150 divider-v text-center">
-                  <w-input v-model.number="current.currentDex" class="title1 primary" />
+                  <w-input v-model.number="current.currentDex" class="title1" color="minor" />
                 </div>
               </w-flex>
 
@@ -107,7 +107,7 @@
                   <w-input v-model.number="current.maxWil" class="title1" color="minor" />
                 </div>
                 <div class="w-150 divider-v text-center">
-                  <w-input v-model.number="current.currentWil" class="title1 primary" />
+                  <w-input v-model.number="current.currentWil" class="title1" color="minor" />
                 </div>
               </w-flex>
             </w-card>

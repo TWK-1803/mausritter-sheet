@@ -63,7 +63,7 @@
               <checker :faces="20" :context="$t('STR save')" :score="currentStr" size="lg" />
             </div>
             <div class="w-150 ml2">
-              <w-input v-model.number="maxStr" class="title1" color="minor" />
+              <w-input v-model.number="maxStr" class="title1 primary" />
             </div>
             <div class="w-150 divider-v">
               <number-input v-model="currentStr" :max="maxStr" class="title1 primary" @input="setCurrentStr" />
@@ -82,7 +82,7 @@
               <checker :faces="20" :context="$t('DEX save')" :score="currentDex" size="lg" />
             </div>
             <div class="w-150 ml2">
-              <w-input v-model.number="maxDex" class="title1" color="minor" />
+              <w-input v-model.number="maxDex" class="title1 primary" />
             </div>
             <div class="w-150 divider-v">
               <number-input v-model="currentDex" :max="maxDex" class="title1 primary" @input="setCurrentDex" />
@@ -101,7 +101,7 @@
               <checker :faces="20" :context="$t('WIL save')" :score="currentWil" size="lg" />
             </div>
             <div class="w-150 ml2">
-              <w-input v-model.number="maxWil" class="title1" color="minor" />
+              <w-input v-model.number="maxWil" class="title1 primary" />
             </div>
             <div class="w-150 divider-v">
               <number-input v-model="currentWil" :max="maxWil" class="title1 primary" @input="setCurrentWil" />
@@ -118,7 +118,7 @@
             </div>
             <div class="w-50" />
             <div class="w-150 ml2">
-              <w-input v-model.number="maxHP" class="title1" color="minor" />
+              <w-input v-model.number="maxHP" class="title1 primary" />
             </div>
             <div class="w-150 divider-v">
               <number-input v-model="currentHP" :max="maxHP" class="title1 primary" @input="setCurrentHP" />
