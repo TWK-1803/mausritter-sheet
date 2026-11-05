@@ -42,7 +42,7 @@
               </w-button>
 
               <div class="spacer" />
-              <img :src="require(`@/assets/compatible-with-mausritter-88x32-${theme}.png`)" contain class="clickable" @click="$refs['about-dialog'].show()" />
+              <img :src="compatibleLogo" contain class="clickable" @click="$refs['about-dialog'].show()" />
             </w-toolbar>
 
             <div v-show="show.history" class="history-background h-max card-bordered">
@@ -58,8 +58,7 @@
             </div>
 
             <div v-show="show.welcome" class="welcome-background h-max card-bordered">
-              <welcome-app v-if="isStandaloneApp" ref="welcome-app" />
-              <welcome v-else ref="welcome" />
+              <welcome ref="welcome" />
             </div>
           </w-flex>
         </w-flex>
@@ -70,8 +69,9 @@
 </template>
 
 <script>
-import * as app from '@tauri-apps/api/app'
-import { PREF_FONT_DEFAULT, PREF_FONT_INDEX, PREF_THEME, PREF_THEME_DEFAULT } from '@/services/defines'
+import compatibleLogoDark from '@/assets/compatible-with-mausritter-88x32-dark.png'
+import compatibleLogoLight from '@/assets/compatible-with-mausritter-88x32-light.png'
+import { PREF_FONT_DEFAULT, PREF_FONT_INDEX, PREF_THEME, PREF_THEME_DEFAULT, THEME_DARK } from '@/services/defines'
 import { isMobileDevice } from '@/services/responsive'
 import dices3D from '@/services/dice3d'
 import About from '@/components/About.vue'
@@ -80,13 +80,12 @@ import SheetToolbar from '@/components/SheetToolbar.vue'
 import History from '@/components/History.vue'
 import Hirelings from '@/components/Hirelings.vue'
 import Welcome from './components/Welcome.vue'
-import WelcomeApp from './components/WelcomeApp.vue'
 import Chips from './components/Chips.vue'
 import Bank from './components/Bank.vue'
 
 export default {
   name: 'App',
-  components: { About, Sheet, SheetToolbar, History, Hirelings, Welcome, WelcomeApp, Chips, Bank },
+  components: { About, Sheet, SheetToolbar, History, Hirelings, Welcome, Chips, Bank },
   data () {
     return {
       tabs: [],
@@ -99,10 +98,10 @@ export default {
     }
   },
   computed: {
+    compatibleLogo () { return this.theme === THEME_DARK ? compatibleLogoDark : compatibleLogoLight },
     fontIndex () { return this.prefs[PREF_FONT_INDEX] || PREF_FONT_DEFAULT },
     hirelingsCount () { return this.$store.getters['hirelings'].length },
     isMobileDevice () { return isMobileDevice(this.$waveui.breakpoint.name) },
-    isStandaloneApp () { return this.$store.getters['standaloneApp'] },
     prefs () { return this.$store.getters['preferences'] || {} },
     theme () {
       return this.prefs[PREF_THEME] || PREF_THEME_DEFAULT
@@ -118,36 +117,19 @@ export default {
   created () {
     this.$store.dispatch('loadPreferences')
   },
-  async mounted () {
+  mounted () {
     this.mausritter.bank = this.$refs['bank']
     this.mausritter.sheet = this.$refs['sheet']
     this.mausritter.sheetToolbar = this.$refs['sheettoolbar']
     this.mausritter.hirelings = this.$refs['hirelings']
     dices3D.initialize('dice-canvas')
 
-    try {
-      const tauri = await app.getTauriVersion()
-      this.$store.commit('setStandaloneApp', true)
-      this.$store.commit('historyAdd', { message: this.$t('Welcome to Mausritter Sheet!'), secondary: '(tauri ' + tauri + ')' })
-    } catch (error) {
-      this.$store.commit('setStandaloneApp', false)
-    }
-
-    if (!this.isStandaloneApp) {
-      // Web application
-      this.$store.commit('historyAdd', { message: this.$t('Welcome to Mausritter Sheet!') })
-    }
+    this.$store.commit('historyAdd', { message: this.$t('Welcome to Mausritter Sheet!') })
 
     // Prevent losing sheet if user clos the browser's tab
     window.addEventListener("beforeunload", e => {
-      let isDirty = false
-      if (this.isStandaloneApp) {
-        isDirty = this.$refs['welcome-app'].isDirty()
-      } else {
-        // Web application
-        this.$store.commit('historyAdd', { message: this.$t('Welcome to Mausritter Sheet!') })
-        isDirty = this.$refs['welcome'].isDirty()
-      }
+      this.$store.commit('historyAdd', { message: this.$t('Welcome to Mausritter Sheet!') })
+      const isDirty = this.$refs['welcome'].isDirty()
 
       if (!isDirty) {
           return undefined

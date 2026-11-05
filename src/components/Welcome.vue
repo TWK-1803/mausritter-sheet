@@ -13,17 +13,6 @@
 
       <div class="spacer" />
 
-      <!-- <w-menu v-if="!isStandaloneApp" v-model="showAppMenu">
-        <template #activator="{ on }">
-          <w-button text v-on="on" xl @click="showAppMenu = !showAppMenu">
-            <w-icon>mdi mdi-application</w-icon>
-            {{ $t('Applications...') }}
-          </w-button>
-        </template>
-
-        TODO
-      </w-menu> -->
-
       <w-menu v-model="showPrefMenu">
         <template #activator="{ on }">
           <w-button v-on="on" text @click="showPrefMenu = !showPrefMenu">
@@ -160,7 +149,6 @@ export default {
       LOCALES,
       importData: null,
       locale: null,
-      showAppMenu: false,
       showPrefMenu: false,
       slots: []
     }
@@ -176,7 +164,6 @@ export default {
         return error.message
       }
     },
-    isStandaloneApp () { return this.$store.getters['standaloneApp'] },
     prefs () { return this.$store.getters['preferences'] || {} },
     theme: {
       get () {
@@ -280,8 +267,8 @@ export default {
     slotName (index) {
       const parts = this.slots[index].split('|')
       let result = parts[0]
-      if (parts.length > 1) result += ' — ' + parts[1]
-      if (parts.length > 2) result += ' — ' + this.$t('Level') + ' ' + parts[2]
+      if (parts.length > 1) result += ' â€” ' + parts[1]
+      if (parts.length > 2) result += ' â€” ' + this.$t('Level') + ' ' + parts[2]
       if (parts.length > 3) result += ' (' + parts[3] + ')'
       return result
     },

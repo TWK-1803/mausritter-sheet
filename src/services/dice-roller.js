@@ -45,8 +45,7 @@ export function rollCustom (formula) {
 
   // Accept String: d4, 2D6+4, 2d6-1, d12, b3d10, w2d8
   if (typeof formula === 'string') {
-    let _dice = formula
-    _dice = formula.toLowerCase()
+    let _dice = formula.toLowerCase()
     if (formula[0] === 'b') {
       opt.post = Math.max
       _dice = formula.slice(1)

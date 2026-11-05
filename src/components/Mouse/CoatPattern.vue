@@ -18,7 +18,7 @@ import { patterns } from '@/services/coats'
 import D6 from '@/components/D6'
 
 export default {
-  name: 'Pattern',
+  name: 'CoatPattern',
   components: { D6 },
   emits: ['input', 'roll'],
   props: {

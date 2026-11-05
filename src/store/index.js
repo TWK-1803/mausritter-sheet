@@ -7,6 +7,9 @@ import { request } from '@/services/api'
 import { d6 } from '@/services/dice-roller'
 import { loadPrefs, savePrefsKey } from '@/services/preferences'
 
+// Mouse names of every locale, bundled eagerly so switching locale stays synchronous
+const mouseNames = import.meta.glob('../locales/mouse-names.*.js', { eager: true })
+
 function uuidValidateV5 (uuid) {
   return uuidValidate(uuid) && uuidVersion(uuid) === 5;
 }
@@ -59,7 +62,6 @@ export const store = createStore({
       matrinames: [],
       names: [],
       preferences: {},
-      standaloneApp: false, // This is true if this app is a computer application. By default this app is a web page
       tableId: null,
       tableState: null
     }
@@ -77,7 +79,6 @@ export const store = createStore({
     names: state => { return state.names || [] },
     preferences: state => { return state.preferences || {} },
     sheetSignature: state => { return state.currentSheet.sheet ? state.currentSheet.sheet.name + ` (${state.currentSheet.sheet.background})`: null },
-    standaloneApp: state => { return state.standaloneApp },
     tableId: state => { return state.tableId },
     tableState: state => { return state.tableState }
   },
@@ -145,9 +146,6 @@ export const store = createStore({
     setPrefs (state, preferences) {
       state.preferences = preferences
     },
-    setStandaloneApp (state, standaloneApp) {
-      state.standaloneApp = standaloneApp
-    },
     setTableId (state, tableId) {
       state.tableId = tableId
     }
@@ -208,7 +206,7 @@ export const store = createStore({
     },
     changeLocale (context, locale) {
       context.commit('setLocale', locale)
-      const module = require(`../locales/mouse-names.${locale}.js`)
+      const module = mouseNames[`../locales/mouse-names.${locale}.js`]
       context.commit('setMatrinames', module.matrinames )
       context.commit('setNames', module.names )
     },
