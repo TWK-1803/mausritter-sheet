@@ -621,6 +621,17 @@ textarea {
   text-align: right;
 }
 
+/* Prompt dialog: keep title and actions visible, scroll only the content */
+.w-dialog__content.prompt-dialog {
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.prompt-dialog .prompt-dialog-content {
+  min-height: 0;
+  overflow: auto;
+}
+
 .disposition {
   font-size: 11px;
   font-style: italic;
