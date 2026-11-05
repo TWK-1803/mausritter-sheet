@@ -1,5 +1,5 @@
 
-import uuencode from'uuencode'
+import uuencode from '@/services/uuencode'
 
 const storage = window.localStorage
 

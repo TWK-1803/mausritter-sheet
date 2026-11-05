@@ -267,8 +267,8 @@ export default {
     slotName (index) {
       const parts = this.slots[index].split('|')
       let result = parts[0]
-      if (parts.length > 1) result += ' â€” ' + parts[1]
-      if (parts.length > 2) result += ' â€” ' + this.$t('Level') + ' ' + parts[2]
+      if (parts.length > 1) result += ' — ' + parts[1]
+      if (parts.length > 2) result += ' — ' + this.$t('Level') + ' ' + parts[2]
       if (parts.length > 3) result += ' (' + parts[3] + ')'
       return result
     },
