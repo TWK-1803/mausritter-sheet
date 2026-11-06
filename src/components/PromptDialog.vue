@@ -1,5 +1,5 @@
 <template>
-  <w-dialog v-model="show" :title="title" persistent :width="700" dialog-class="prompt-dialog" content-class="prompt-dialog-content">
+  <w-dialog v-model="show" :title="title" persistent :width="700">
     <slot name="content">
       <p class="pa2">{{ message }}</p>
       <pre v-if="data" class="text-small">

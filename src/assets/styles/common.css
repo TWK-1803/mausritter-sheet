@@ -149,8 +149,8 @@ blockquote {
 
 .form-gray,
 .form-gray--bg {
-  background-color: rgba(var(--w-contrast-bg-color-rgb), 0.5);
-  color: rgb(var(--w-contrast-color-rgb));
+  background-color: color-mix(in srgb, var(--w-contrast-bg-color) 50%, transparent);
+  color: var(--w-contrast-color);
 }
 
 .text-secondary {
@@ -223,25 +223,25 @@ blockquote {
 }
 
 .shadow {
-  box-shadow: 2px 2px 5px 2px rgba(var(--w-base-color-rgb), 0.75);
+  box-shadow: 2px 2px 5px 2px color-mix(in srgb, var(--w-base-color) 75%, transparent);
 }
 
 .card-sheet {
   border-radius: 5px;
   border-width: 2px;
-  color: rgb(var(--w-base-color-rgb));
-  background-color: rgb(var(--w-base-bg-color-rgb));
+  color: var(--w-base-color);
+  background-color: var(--w-base-bg-color);
 }
 
 .card-sheet-white {
   border-radius: 5px;
   border-width: 2px;
-  background-color: rgba(var(--w-base-bg-color-rgb), 0.5);
+  background-color: color-mix(in srgb, var(--w-base-bg-color) 50%, transparent);
 }
 
 .card-bordered {
   padding: 0;
-  border: 1px solid rgba(var(--w-base-color-rgb), 0.5);
+  border: 1px solid color-mix(in srgb, var(--w-base-color) 50%, transparent);
   border-radius: 0;
 }
 
@@ -435,11 +435,11 @@ textarea {
 .item-def,
 .item-use,
 .item-price {
-  background-color: rgba(var(--w-base-bg-color-rgb), 0.5);
+  background-color: color-mix(in srgb, var(--w-base-bg-color) 50%, transparent);
 }
 
 .item-damage-dice {
-  background-color: rgba(var(--w-base-bg-color-rgb), 0.5);
+  background-color: color-mix(in srgb, var(--w-base-bg-color) 50%, transparent);
   border-radius: 0;
   border: 0;
 }
@@ -457,20 +457,20 @@ textarea {
 }
 
 .background-white-25 {
-  background-color: rgba(var(--w-base-bg-color-rgb), 0.25);
+  background-color: color-mix(in srgb, var(--w-base-bg-color) 25%, transparent);
 }
 
 .background-white-50 {
-  /* background-color: rgba(var(--w-base-bg-color-rgb), 0.5); */
-  background-color: rgba(var(--w-base-bg-color-rgb), 0.5);
+  /* background-color: color-mix(in srgb, var(--w-base-bg-color) 50%, transparent); */
+  background-color: color-mix(in srgb, var(--w-base-bg-color) 50%, transparent);
 }
 
 .background-white-75 {
-  background-color: rgba(var(--w-base-bg-color-rgb), 0.75);
+  background-color: color-mix(in srgb, var(--w-base-bg-color) 75%, transparent);
 }
 
 .background-white-85 {
-  background-color: rgba(var(--w-base-bg-color-rgb), 0.85);
+  background-color: color-mix(in srgb, var(--w-base-bg-color) 85%, transparent);
 }
 
 .item-damage,
@@ -607,35 +607,6 @@ textarea {
 
 .w-select__selection-slot {
   z-index: auto;
-}
-
-/* Right-justified dropdowns (birthsign, coat color, coat pattern, look) */
-.select-right .w-select__selection-slot {
-  flex: 1;
-  text-align: right;
-}
-
-.select-right .w-select__selection-slot > .w-flex,
-.select-right-menu .w-list__item-label {
-  justify-content: flex-end;
-  text-align: right;
-}
-
-/* Prompt dialog: keep title and actions visible, scroll only the content */
-.w-dialog__content.prompt-dialog {
-  max-height: 100%;
-  overflow: hidden;
-}
-
-.prompt-dialog .prompt-dialog-content {
-  min-height: 0;
-  overflow: auto;
-}
-
-.disposition {
-  font-size: 11px;
-  font-style: italic;
-  color: var(--w-minor-color);
 }
 
 a {
